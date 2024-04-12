@@ -1,0 +1,18 @@
+@import '../../styles.scss';
+
+:host {
+    @include imagens('../../assets/imagens/home/devergente-home.jpeg',
+    '../../assets/imagens/home/devergente-home-small.jpeg',
+    '../../assets/imagens/home/devergente-home-dark.jpeg',
+    '../../assets/imagens/home/devergente-home-small-dark.jpeg');
+}
+
+.content {
+  @include background-content-center(var(--white-translucent), 20px, 10px);
+}
+
+button {
+  margin: 10px;
+  padding: 10px 20px;
+  @include button-hover(var(--button-hover-color), 10px);
+}

@@ -1,1 +1,110 @@
-/* You can add global styles to this file, and also import other style files */
+@use '@angular/material' as mat;
+
+@include mat.core();
+
+:root {
+  --white-translucent: rgba(255, 255, 255, 0.8);
+  --button-hover-color: rebeccapurple;
+}
+
+app-theme-toggle {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+$devergente-primary: mat.define-palette(mat.$indigo-palette, 900);
+$devergente-accent: mat.define-palette(mat.$amber-palette);
+$devergente-warn: mat.define-palette(mat.$red-palette);
+
+$devergente-primary-dark: mat.define-palette(mat.$indigo-palette, 900, 700, 900);
+$devergente-accent-dark: mat.define-palette(mat.$amber-palette, 700, 500, 900);
+$devergente-warn-dark: mat.define-palette(mat.$red-palette, 700, 500, 900);
+
+@mixin responsive-image() {
+  background-repeat: no-repeat;
+  background-position: center;
+  justify-content: center;
+  background-size: cover;
+  align-items: center;
+  display: flex;
+  height: 100vh;
+  transition: background-image 0.5s ease-in-out;
+}
+
+@mixin theme-toggle($large-image, $small-image, $dark-image, $small-dark-image) {
+  background-image: url($large-image);
+
+  @media (max-width: 799px) {
+    background-image: url($small-image);
+  }
+
+  .dark-theme & {
+    background-image: url($dark-image);
+
+    @media (max-width: 799px) {
+      background-image: url($small-dark-image);
+    }
+  }
+
+}
+
+@mixin imagens($large-image, $small-image, $dark-image, $small-dark-image) {
+  @include responsive-image();
+  @include theme-toggle($large-image, $small-image, $dark-image, $small-dark-image);
+}
+
+// Definindo as cores para o tema claro
+$light-theme: mat.define-light-theme((color: (primary: $devergente-primary,
+        accent: $devergente-accent,
+        warn: $devergente-warn,
+      ),
+      typography: mat.define-typography-config(),
+      density: 0));
+
+// Definindo as cores para o tema escuro
+$dark-theme: mat.define-dark-theme((color: (primary: $devergente-primary-dark,
+        accent: $devergente-accent-dark,
+        warn: $devergente-warn-dark,
+      ),
+      typography: mat.define-typography-config(),
+      density: 0));
+
+// Incluindo os temas para todos os componentes
+@include mat.all-component-themes($light-theme);
+
+@mixin dark-theme() {
+  body.dark-theme {
+    --mat-primary: mat.get-color-config-value($dark-theme, primary);
+    --mat-accent: mat.get-color-config-value($dark-theme, accent);
+    --mat-warn: mat.get-color-config-value($dark-theme, warn);
+    background-color: black;
+    color: white;
+    --white-translucent: rgba(0, 0, 0, 0.8);
+    --button-hover-color: rgb(150, 150, 50);
+  }
+}
+
+@include dark-theme();
+
+@mixin background-content-center($background-color, $padding, $border-radius) {
+  background-color: $background-color;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: $padding;
+  border-radius: $border-radius;
+}
+
+@mixin button-hover($button-hover-color, $border-radius) {
+  transition: background-color 0.3s ease, border-radius 0.3s ease;
+
+  &:hover {
+    background-color: var(--button-hover-color);
+    border-radius: $border-radius;
+  }
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
